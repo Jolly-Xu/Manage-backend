@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xujialin.mapper.ArticlesMapper">
+
+    <select id="getArticlesbypage" resultType="com.xujialin.entity.Articles">
+        SELECT id,articlename,articleauthname,articletag,createtime,updatatime,isprivacy,cover,authid
+        from articles
+        where authid = #{authid}
+          and logic_delete = 0
+        <if test="!authname.isEmpty() and authname !=null">
+            and articleauthname like "%"#{authname}"%"
+        </if>
+        <if test="!articlecontent.isEmpty() and articlecontent !=null">
+            and articletag like "%"#{articlecontent}"%"
+        </if>
+        <if test="!starttime.isEmpty() and starttime !=null">
+        and updatatime BETWEEN #{starttime} And #{endtime}
+        </if>
+        <if test="pagesize != 0">
+            LIMIT #{startpage},#{pagesize}
+        </if>
+
+    </select>
+</mapper>
