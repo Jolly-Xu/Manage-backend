@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author XuJiaLin
@@ -54,11 +55,17 @@ public class UserDetailsServiceImpl implements UserDetailsService{
          o = (User) redisTemplate.opsForValue().get(key);
 
         if (o ==null){
-            System.out.println("查询数据库");
             QueryWrapper wrapper=new QueryWrapper();
-            wrapper.eq("username",username);
+            Map<String,Object> map =new HashMap<>();
+            map.put("username",username);
+            map.put("logic_delete",0);
+            wrapper.allEq(map);
             User one = userService.getOne(wrapper);
+            if (one == null){
+              throw new UsernameNotFoundException("用户名不存在");
+            }
             redisTemplate.opsForValue().set(key,one);
+            redisTemplate.expire(key,60*60*2, TimeUnit.SECONDS);
             o=one;
         }
             userDetails.setUser(o);

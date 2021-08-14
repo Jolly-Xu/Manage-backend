@@ -45,9 +45,14 @@ public class RedisUtils {
     }
 
 
-    public static String GenerateFindKey(String q1,String q2,String q3,String q4)
+    public static String GenerateFindKey(String q1,String q2,String q3,String q4,Integer id)
     {
-        return "Blog:Find:Key:"+q1+q2+q3+q4;
+        return "Blog:Find:Key:"+q1+q2+q3+q4+id;
+    }
+
+    public static String GenerateFindKey(String q1)
+    {
+        return "Blog:Find:Key:"+q1;
     }
 
     public String GenerateKey(Integer id){
@@ -63,6 +68,9 @@ public class RedisUtils {
         return "Blog:Find:TagNames";
     }
 
+    public static String Generatecommentkey(Integer id){return "Blog:Find:Comment:"+id;}
+
+    public static String GenerateKeyAlluserkey(){return  "Blog:UserInfo:ALL";}
 }
 
 

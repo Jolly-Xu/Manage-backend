@@ -27,4 +27,14 @@ public class ArticlesServiceImpl extends ServiceImpl<ArticlesMapper, Articles> i
 
         return this.baseMapper.getArticlesbypage(articlecontent,authname,starttime,endtime,currentpage,pagesize,authid);
     }
+
+    @Override
+    public Boolean DeletearticlebyId(String id) {
+        return this.baseMapper.DeletearticlebyId(id);
+    }
+
+    @Override
+    public void Changeprivacy(String id, int state) {
+         this.baseMapper.Changeprivacy(id,state);
+    }
 }

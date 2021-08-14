@@ -1,9 +1,6 @@
 package com.xujialin.Config;
 
-import com.xujialin.Handler.CustomizeAccessDeniedHandler;
-import com.xujialin.Handler.CustomizeAuthenticationEntryPoint;
-import com.xujialin.Handler.CustomizeAuthenticationFailureHandler;
-import com.xujialin.Handler.CustomizeAuthenticationSuccessHandler;
+import com.xujialin.Handler.*;
 import com.xujialin.Repository.MyPersistentTokenRepository;
 import com.xujialin.SafetyVerification.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +46,9 @@ public class SpringsecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomizeAuthenticationSuccessHandler authenticationSuccessHandler;
 
+    @Autowired
+    private CustomizeLogoutSuccessHandler customizeLogoutSuccessHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -66,7 +66,6 @@ public class SpringsecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(authenticationEntryPoint); // 匿名用户访问保护资源处理器
 
         http.authorizeRequests().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
-
             @Override
             public <O extends FilterSecurityInterceptor> O postProcess(O o) {
                 o.setSecurityMetadataSource(metadataSource);
@@ -75,7 +74,11 @@ public class SpringsecurityConfig extends WebSecurityConfigurerAdapter {
             }
         });
 
-        //http.addFilterBefore(interceptor,FilterSecurityInterceptor.class);
+            http.logout().logoutUrl("/logout")
+                    .logoutSuccessHandler(customizeLogoutSuccessHandler)
+                    .deleteCookies("JSESSIONID")
+                    .permitAll();
+        ;
 
         //关闭csrf防护
         http.csrf().disable();

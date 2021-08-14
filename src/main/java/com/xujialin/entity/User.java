@@ -105,5 +105,7 @@ public class User implements Serializable {
      */
     private String intro;
 
+    private String email;
 
+    private String job;
 }

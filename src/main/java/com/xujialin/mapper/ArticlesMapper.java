@@ -23,4 +23,8 @@ public interface ArticlesMapper extends BaseMapper<Articles> {
                                              Integer startpage,
                                              Integer pagesize,
                                              Integer authid);
+
+    public Boolean DeletearticlebyId(String id);
+
+    public void Changeprivacy(String id,int state);
 }

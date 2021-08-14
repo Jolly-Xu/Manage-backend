@@ -24,7 +24,6 @@ public class Articlestags implements Serializable {
      * 标签id
      */
     private Integer id;
-
     /**
      * 标签名
      */
